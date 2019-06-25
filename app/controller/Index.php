@@ -33,4 +33,9 @@ class Index extends Controller
         print_r($res);
         die();
     }
+    public function shop()
+    {
+        $arr=$_GET;
+        echo "<pre>";print_r($arr);die();
+    }
 }

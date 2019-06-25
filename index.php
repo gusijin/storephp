@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * storePHP
+ * An open source application development framework for PHP
+ * Copyright (c) 2019 - 2020, gusijin
+ * @package	storePHP
+ * @author	gusijin
+ * @copyright	Copyright (c) 2019 - 2020, gusijin
+ * @since	Version 1.0.0
+ */
+
+
 if (version_compare(PHP_VERSION, '5.4.0', '<')) {
     die('storephp框架需要使用PHP5.4以上版本哦');
 };

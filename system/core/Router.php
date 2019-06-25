@@ -38,6 +38,8 @@ class Router
      */
     public static function parseRewrite()
     {
+
+
         if (strpos(self::$uri, "?")) {
             $router = substr(self::$uri, 0, strpos(self::$uri, "?"));
         } else {
@@ -45,9 +47,15 @@ class Router
         }
         if ($router == DIRECTORY_SEPARATOR) {
             $router = [DEFAULT_CONTROLLER, DEFAULT_ACTION];
-        } else {
-            $router = explode(DIRECTORY_SEPARATOR, ltrim($router, DIRECTORY_SEPARATOR));
         }
+
+        $routerUri = trim($router, DIRECTORY_SEPARATOR);
+        $routersArr = require CONF_PATH . 'routers.php';
+        if (!empty($routersArr['ROUTES'][$routerUri])) {
+            $routerUri = $routersArr['ROUTES'][$routerUri]['action'];
+        }
+        $router = explode(DIRECTORY_SEPARATOR, $routerUri);
+
         self::$contrallerName = ucfirst(strtolower($router[0]));
         self::$actionName = isset($router[1]) ? strtolower($router[1]) : DEFAULT_ACTION;
     }
