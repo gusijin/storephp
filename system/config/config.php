@@ -2,9 +2,8 @@
 return [
     'DEFAULT_CONTROLLER' => 'index',
     'DEFAULT_ACTION' => 'index',
-    'EXT' => '.php',
+    'PHP_EXT' => '.php',
     'VIEW_EXT' => '.html',
-    'VIEW_PATH' => 'view',
 
     'DB_HOST' => '10.1.190.24',
     //'DB_HOST' => '192.168.0.106',

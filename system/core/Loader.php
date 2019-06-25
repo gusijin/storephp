@@ -12,7 +12,7 @@ class Loader
         }
 
         $class = ltrim($class, '\\');
-        $class_path = str_replace('\\', DIRECTORY_SEPARATOR, $class) . EXT;
+        $class_path = str_replace('\\', DIRECTORY_SEPARATOR, $class) . PHP_EXT;
         if (file_exists(SYSTEM_PATH . $class_path)) {
             include SYSTEM_PATH . $class_path;
             return true;

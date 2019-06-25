@@ -28,10 +28,13 @@ class Index extends Controller
 
     public function test()
     {
-        $res = $this->indexModel->getUsersList();
+        /*$res = $this->indexModel->getUsersList();
         echo "<pre>";
         print_r($res);
-        die();
+        die();*/
+
+        $arr=$_GET;
+        echo "<pre>";print_r($arr);die();
     }
     public function shop()
     {
