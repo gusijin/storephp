@@ -36,6 +36,7 @@ class DB
     private $_lock_in_share_mode = "";            // write lock
     private $_count_wheres = array();        // count where
     private $_count_wheres_params = array();        // count where params
+    private $_is_show_sql = false;        // count where params
     private $_exp = array('eq' => '=', 'neq' => '<>', 'gt' => '>', 'egt' => '>=', 'lt' => '<', 'elt' => '<=',
         'not like' => 'NOT LIKE', 'like' => 'LIKE', 'in' => 'IN', 'not in' => 'NOT IN', 'between' => 'BETWEEN',
         'not between' => 'NOT BETWEEN',);
@@ -168,6 +169,10 @@ class DB
         $this->_wheres_params = array_merge($this->_wheres_params, $params);
     }
 
+    /**
+     * where数组分析
+     * @param $where
+     */
     private function arrayWhere($where)
     {
         $whereStr = '';
@@ -184,7 +189,6 @@ class DB
     private function parseWhereItem($key, $val)
     {
         $whereStr = '';
-        $whereParam = array();
         if (is_array($val)) {
             if (is_string($val[0])) {
                 $exp = strtolower($val[0]);
@@ -373,8 +377,13 @@ class DB
         }
         $this->_sql = $sql;
         foreach ($params as $paramsItem) {
-            is_string($paramsItem) && $paramsItem='"'.$paramsItem.'"';
+            is_string($paramsItem) && $paramsItem = '"' . $paramsItem . '"';
             $this->_sql = substr_replace($this->_sql, $paramsItem, strpos($this->_sql, "?"), strlen("?"));
+        }
+
+        if ($this->_is_show_sql) {
+            echo $this->_sql;
+            exit();
         }
 
         $this->_params = $params;
@@ -429,7 +438,6 @@ class DB
             $sets[] = sprintf("`%s` = ?", $col);
             $params[] = $val;
         }
-        $sql = "";
         if ($this->is_mysql()) {
             $sql = sprintf("INSERT INTO `%s` SET %s", self::$_fulltable, implode(", ", $sets));
         } else {
@@ -548,6 +556,7 @@ class DB
         $this->_offset = null;
         $this->_for_update = "";
         $this->_lock_in_share_mode = "";
+        $this->_is_show_sql = false;
         return $this;
     }
 
@@ -660,6 +669,7 @@ class DB
     //获取sql语句
     public function getSql()
     {
-        return $this->_sql;
+        $this->_is_show_sql = true;
+        return $this;
     }
 }
