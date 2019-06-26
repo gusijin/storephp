@@ -3,17 +3,10 @@
 namespace model;
 
 use core\Model;
-use database\Mysqli;
+use database\DB;
 
 class IndexModel extends Model
 {
-
-    protected $db;
-
-    public function __construct()
-    {
-        $this->db = Mysqli::getInstance();
-    }
 
     public function doSomething()
     {
@@ -23,6 +16,13 @@ class IndexModel extends Model
 
     public function getUsersList()
     {
-        return $this->db->getAll("select * from users");
+        $where=[
+            'user_id'=>array('in', array(1, 2)),
+            //'name'=>'11ss2',
+        ];
+        /*'user_id = ?', 1
+        'user_id = ? and name=?', 1,"11ss2"*/
+        $res = DB::table('users')->where($where)->select()->fetchAll();
+        return $res;
     }
 }

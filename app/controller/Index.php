@@ -28,17 +28,17 @@ class Index extends Controller
 
     public function test()
     {
-        /*$res = $this->indexModel->getUsersList();
+        $res = $this->indexModel->getUsersList();
         echo "<pre>";
         print_r($res);
-        die();*/
-
-        $arr=$_GET;
-        echo "<pre>";print_r($arr);die();
+        die();
     }
+
     public function shop()
     {
-        $arr=$_GET;
-        echo "<pre>";print_r($arr);die();
+        $arr = $_GET;
+        echo "<pre>";
+        print_r($arr);
+        die();
     }
 }
