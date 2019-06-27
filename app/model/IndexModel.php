@@ -17,7 +17,7 @@ class IndexModel extends Model
     public function getUsersList()
     {
         $where=[
-            'user_id'=>array('in', array(1, 2)),
+            'user_id'=>array('in', array(1, 2,3)),
             //'name'=>'11ss2',
         ];
         /*'user_id = ?', 1

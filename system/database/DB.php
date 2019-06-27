@@ -214,7 +214,12 @@ class DB
                     if (is_string($val[1])) {
                         $val[1] = explode(',', $val[1]);
                     }
-                    $zone = implode(',', $val[1]);
+                    $zone = '';
+                    foreach ($val[1] as $valInItem) {
+                        $zone .= "?,";
+                        $this->_wheres_params[] = $valInItem;
+                    }
+                    $zone = rtrim($zone, ",");
                     $whereStr .= $key . ' ' . $this->_exp[$exp] . " ({$zone})";
                 } elseif (preg_match('/^(not between|between)$/', $exp)) { // BETWEEN运算
                     $data = is_string($val[1]) ? explode(',', $val[1]) : $val[1];
