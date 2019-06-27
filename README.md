@@ -4,7 +4,7 @@
 gusijin(古思金)
 
 
-### Introduce
+### 简介
 
 StorePHP是一个简单、快速的轻量级国产PHP开发框架，诞生于2019年。
 
@@ -12,8 +12,7 @@ StorePHP可以支持windows/Unix/Linux等服务器环境，正式版需要PHP5.4
 
 StorePHP是学习框架原理最佳选择，代码容易理解、复用性强
 
-### nginx install
-
+### Nginx 配置
 nginx.conf文件
 
 ```
@@ -38,6 +37,19 @@ http://url?r=index/test
 http://url/index/test
 
 其中index为控制器，test为方法
+
+【自定义路由】
+
+system/config/routers.php
+
+```
+return [
+    'ROUTES' => [
+        'shop.html' => ['action' => 'index/shop'],
+    ],
+];
+
+```
 
 
 ### 数据库操作
@@ -95,6 +107,9 @@ $res=DB::table('users')->where($where)->fetchAll();
 
 DB::table('users')->where('user_id = ? and name=?', 1,"gsj")->fetch();
 
+
+//获取sql语句 getSql()
+DB::table('users')->select("user_id,name")->getSql()->fetchAll();
 
 
 

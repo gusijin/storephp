@@ -29,12 +29,15 @@ class IndexModel extends Model
 
 
         // 删除数据
-        DB::table('users')->where(['user_id' => 4])->delete();//返回影响条数
+        //$res=DB::table('users')->where(['user_id' => 4])->delete();//返回影响条数
 
         //更新数据
         /*$data=['name'=>'gsj2020'];
         $res=DB::table('users')->where(['user_id'=>4])->update($data); //返回影响条数*/
 
+
+        //获取sql语句 getSql()
+        DB::table('users')->select("user_id,name")->getSql()->fetchAll();
 
         //全部查询
         //DB::table('users')->select("user_id,name")->fetchAll();
