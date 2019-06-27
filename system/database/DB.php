@@ -555,7 +555,7 @@ class DB
         if (isset($this->_limit)) {
             $params[] = $this->_limit;
         }
-        return $this->vquery($sql, $params);
+        return $this->vquery($sql, $params)->rowCount();
     }
 
     // 重置所有

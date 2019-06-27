@@ -20,10 +20,20 @@ class IndexModel extends Model
         /*$data=['name'=>'gsj2019'];
         DB::table('users')->insert($data); //返回主键id*/
 
+        //批量插入
+        /*$fields = array('name');
+        for ($i=1; $i<=10; $i++) {
+            $rowsArr[] = array("gsj_".mt_rand(100, 500));
+        }
+        DB::table('users')->batchInsert($fields, $rowsArr);*/
+
+
+        // 删除数据
+        DB::table('users')->where(['user_id' => 4])->delete();//返回影响条数
 
         //更新数据
-        $data=['name'=>'gsj2020'];
-        $res=DB::table('users')->where(['user_id'=>4])->update($data); //返回影响条数
+        /*$data=['name'=>'gsj2020'];
+        $res=DB::table('users')->where(['user_id'=>4])->update($data); //返回影响条数*/
 
 
         //全部查询
