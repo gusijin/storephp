@@ -120,7 +120,7 @@ class DB
     }
 
     // column返回的列
-    public function column($column)
+    public function select($column)
     {
         $this->_columns[] = $column;
         return $this;
@@ -401,8 +401,8 @@ class DB
         return $stmt;
     }
 
-    // 查询数据
-    public function select($columns = null)
+    // 组装查询数据
+    private function assembleData($columns = null)
     {
         if (!empty($columns)) {
             $this->_columns[] = $columns;
@@ -432,6 +432,16 @@ class DB
         return $this->vquery($sql, $params);
     }
 
+    public function fetchAll()
+    {
+        return $this->assembleData()->fetchAll();
+    }
+
+    public function fetch()
+    {
+        return $this->assembleData()->fetch();
+    }
+
     // 添加数据
     public function insert(array $data)
     {
@@ -448,7 +458,11 @@ class DB
         } else {
             $sql = sprintf("INSERT INTO `%s` (%s) VALUES (?%s)", self::$_fulltable, implode(", ", $cols), str_repeat(", ?", count($cols) - 1));
         }
-        return $this->vquery($sql, $params);
+        $affectRow = $this->vquery($sql, $params)->rowCount();
+        if ($affectRow) {
+            return $this->lastInsertId();
+        }
+        return false;
     }
 
     // 获取自增ID
@@ -511,7 +525,7 @@ class DB
         if (isset($this->_limit)) {
             $params[] = $this->_limit;
         }
-        return $this->vquery($sql, $params);
+        return $this->vquery($sql, $params)->rowCount();
     }
 
     // 替换数据
@@ -624,7 +638,7 @@ class DB
     // 根据主键查找行
     public function find($id)
     {
-        return $this->where(sprintf("`%s` = ?", $this->_pk), $id)->select()->fetch();
+        return $this->where(sprintf("`%s` = ?", $this->_pk), $id)->assembleData()->fetch();
     }
 
     // 添加数据
@@ -668,7 +682,7 @@ class DB
             return new \PDOStatement();
         }
         $ids = array_unique($ids);
-        return $this->where(sprintf("`%s` IN (?)", $this->_pk), $ids)->select($columns);
+        return $this->where(sprintf("`%s` IN (?)", $this->_pk), $ids)->assembleData($columns);
     }
 
     //获取sql语句
