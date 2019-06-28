@@ -48,13 +48,14 @@ class Router
         if ($router == DIRECTORY_SEPARATOR) {
             $router = [DEFAULT_CONTROLLER, DEFAULT_ACTION];
         }
+        is_string($router) && $routerUri = trim($router, DIRECTORY_SEPARATOR);
 
-        $routerUri = trim($router, DIRECTORY_SEPARATOR);
+        //自定义路径
         $routersArr = require CONF_PATH . 'routers.php';
-        if (!empty($routersArr['ROUTES'][$routerUri])) {
+        if (!empty($routerUri)&&!empty($routersArr['ROUTES'][$routerUri])) {
             $routerUri = $routersArr['ROUTES'][$routerUri]['action'];
         }
-        $router = explode(DIRECTORY_SEPARATOR, $routerUri);
+        !is_array($router) && $router = explode(DIRECTORY_SEPARATOR, $routerUri);
 
         self::$contrallerName = ucfirst(strtolower($router[0]));
         self::$actionName = isset($router[1]) ? strtolower($router[1]) : DEFAULT_ACTION;
