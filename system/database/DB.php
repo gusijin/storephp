@@ -36,7 +36,7 @@ class DB
     private $_lock_in_share_mode = "";            // write lock
     private $_count_wheres = array();        // count where
     private $_count_wheres_params = array();        // count where params
-    private $_exp = array('eq' => '=', 'neq' => '<>', 'gt' => '>', 'egt' => '>=', 'lt' => '<', 'elt' => '<=',
+    private $_exp = array('eq' => '=', 'ne' => '<>', 'gt' => '>', 'ge' => '>=', 'lt' => '<', 'le' => '<=',
         'not like' => 'NOT LIKE', 'like' => 'LIKE', 'in' => 'IN', 'not in' => 'NOT IN', 'between' => 'BETWEEN',
         'not between' => 'NOT BETWEEN',);
     public $_sql = "";            // sql
@@ -191,7 +191,7 @@ class DB
         if (is_array($val)) {
             if (is_string($val[0])) {
                 $exp = strtolower($val[0]);
-                if (preg_match('/^(eq|neq|gt|egt|lt|elt)$/', $exp)) { // 比较运算
+                if (preg_match('/^(eq|ne|gt|ge|lt|le)$/', $exp)) { // 比较运算
                     $whereStr .= $key . ' ' . $this->_exp[$exp] . ' ?';
                     $this->_wheres_params[] = $val[1];
                 } elseif (preg_match('/^(not like|like)$/', $exp)) { // 模糊查找
