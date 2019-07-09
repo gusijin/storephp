@@ -109,7 +109,7 @@ DB::table('users')->where('user_id = ? and name=?', 1,"gsj")->fetch();
 
 
 //获取sql语句 getSql()
-DB::table('users')->select("user_id,name")->getSql()->fetchAll();
+DB::table('users')->select("user_id,name")->getSql();
 
 
 
