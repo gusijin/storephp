@@ -36,7 +36,6 @@ class DB
     private $_lock_in_share_mode = "";            // write lock
     private $_count_wheres = array();        // count where
     private $_count_wheres_params = array();        // count where params
-    private $_is_show_sql = false;        // count where params
     private $_exp = array('eq' => '=', 'neq' => '<>', 'gt' => '>', 'egt' => '>=', 'lt' => '<', 'elt' => '<=',
         'not like' => 'NOT LIKE', 'like' => 'LIKE', 'in' => 'IN', 'not in' => 'NOT IN', 'between' => 'BETWEEN',
         'not between' => 'NOT BETWEEN',);
@@ -380,16 +379,7 @@ class DB
         if (strpos($sql, "'") !== false || strpos($sql, '"') !== false) {
             throw new \LogicException("query is not right");
         }
-        $this->_sql = $sql;
-        foreach ($params as $paramsItem) {
-            is_string($paramsItem) && $paramsItem = '"' . $paramsItem . '"';
-            $this->_sql = substr_replace($this->_sql, $paramsItem, strpos($this->_sql, "?"), strlen("?"));
-        }
-
-        if ($this->_is_show_sql) {
-            echo $this->_sql;
-            exit();
-        }
+        $this->_sql = $this->doTheSql($params, $sql);
 
         $this->_params = $params;
         $stmt = $this->pdo()->prepare($sql);
@@ -402,7 +392,7 @@ class DB
     }
 
     // 组装查询数据
-    private function assembleData($columns = null)
+    private function assembleData($columns = null, $isGetSql = false)
     {
         if (!empty($columns)) {
             $this->_columns[] = $columns;
@@ -429,7 +419,28 @@ class DB
         }
         $this->_count_wheres = $this->_wheres;
         $this->_count_wheres_params = $this->_wheres_params;
+
+        if ($isGetSql) {
+            $this->_sql = $this->doTheSql($params, $sql);
+            return $this->_sql;
+        }
+
         return $this->vquery($sql, $params);
+    }
+
+    /**
+     * 拼接sql
+     * @param $params
+     * @param $sql
+     * @return mixed
+     */
+    private function doTheSql($params, $sql)
+    {
+        foreach ($params as $paramsItem) {
+            is_string($paramsItem) && $paramsItem = '"' . $paramsItem . '"';
+            $sql = substr_replace($sql, $paramsItem, strpos($sql, "?"), strlen("?"));
+        }
+        return $sql;
     }
 
     public function fetchAll()
@@ -575,7 +586,6 @@ class DB
         $this->_offset = null;
         $this->_for_update = "";
         $this->_lock_in_share_mode = "";
-        $this->_is_show_sql = false;
         return $this;
     }
 
@@ -688,7 +698,6 @@ class DB
     //获取sql语句
     public function getSql()
     {
-        $this->_is_show_sql = true;
-        return $this;
+        return $this->assembleData('', true);
     }
 }

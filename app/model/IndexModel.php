@@ -37,7 +37,7 @@ class IndexModel extends Model
 
 
         //获取sql语句 getSql()
-        DB::table('users')->select("user_id,name")->getSql()->fetchAll();
+        $res=DB::table('users')->select("user_id,name")->getSql();
 
         //全部查询
         //DB::table('users')->select("user_id,name")->fetchAll();
