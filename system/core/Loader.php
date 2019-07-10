@@ -2,6 +2,8 @@
 
 namespace core;
 
+use Whoops;
+
 class Loader
 {
     public static function autoLoad($class)
@@ -9,6 +11,10 @@ class Loader
         $vendorAutoloadFile = BASE_PATH . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
         if (file_exists($vendorAutoloadFile)) {
             include $vendorAutoloadFile;
+
+            $whoops = new Whoops\Run;
+            $whoops->pushHandler(new Whoops\Handler\PrettyPageHandler);
+            $whoops->register();
         }
 
         $class = ltrim($class, '\\');
