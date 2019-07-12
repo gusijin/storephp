@@ -1,5 +1,25 @@
 {
+  "name": "gusijin/storephp",
+  "description": "Simple and lightweight PHP framework",
+  "type": "project",
+  "keywords": [
+    "framework",
+    "storephp",
+    "mvc"
+  ],
+  "authors": [
+    {
+      "name": "gusijin",
+      "email": "gusijin@foxmail.com"
+    }
+  ],
   "require": {
     "filp/whoops": "^2.4"
+  },
+  "repositories": {
+    "packagist": {
+      "type": "composer",
+      "url": "https://packagist.phpcomposer.com"
+    }
   }
 }

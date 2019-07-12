@@ -17,12 +17,6 @@ if (version_compare(PHP_VERSION, '5.4.0', '<')) {
 
 //框架环境默认为开发环境，上线请关闭
 define("DEVELOP_ENV", true);
-if (DEVELOP_ENV) {
-    ini_set('display_errors', 1);
-    error_reporting(-1);
-} else {
-    ini_set('display_errors', 0);
-}
 
 //定义基本路径
 define("BASE_PATH", str_replace('\\', DIRECTORY_SEPARATOR, __DIR__) . DIRECTORY_SEPARATOR);

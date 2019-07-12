@@ -1,8 +1,10 @@
 <?php
-/*
- * @func 解析一个数组变量,将其各键值定义为常量
- */
+
 if (!function_exists('compileConf')) {
+    /**
+     * 解析一个数组变量,将其各键值定义为常量
+     * @param $conf
+     */
     function compileConf($conf)
     {
         foreach ($conf as $key => $val) {
@@ -16,6 +18,11 @@ if (!function_exists('compileConf')) {
 }
 
 if (!function_exists('createUrl')) {
+    /**
+     * 获取url
+     * @param string $info
+     * @return string
+     */
     function createUrl($info = '')
     {
         $url_info = explode(DIRECTORY_SEPARATOR, strtolower($info));

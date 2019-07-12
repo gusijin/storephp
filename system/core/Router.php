@@ -12,6 +12,8 @@ class Router
      */
     public static function bootstrap()
     {
+        self::setDebug();
+
         self::$uri = $_SERVER['REQUEST_URI'];
         if (isset($_GET['r'])) {
             self::parseCommon();
@@ -52,7 +54,7 @@ class Router
 
         //自定义路径
         $routersArr = require CONF_PATH . 'routers.php';
-        if (!empty($routerUri)&&!empty($routersArr['ROUTES'][$routerUri])) {
+        if (!empty($routerUri) && !empty($routersArr['ROUTES'][$routerUri])) {
             $routerUri = $routersArr['ROUTES'][$routerUri]['action'];
         }
         !is_array($router) && $router = explode(DIRECTORY_SEPARATOR, $routerUri);
@@ -92,6 +94,16 @@ class Router
         define('CONTROLLER', self::$contrallerName);
         define('ACTION', self::$contrallerName);
         define('LOCAL_URL', createUrl(self::$contrallerName . DIRECTORY_SEPARATOR . self::$actionName));
+    }
+
+    private static function setDebug()
+    {
+        if (DEVELOP_ENV) {
+            ini_set('display_errors', 1);
+            error_reporting(-1);
+        } else {
+            ini_set('display_errors', 0);
+        }
     }
 
 }

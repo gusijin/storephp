@@ -12,9 +12,11 @@ class Loader
         if (file_exists($vendorAutoloadFile)) {
             include $vendorAutoloadFile;
 
-            $whoops = new Whoops\Run;
-            $whoops->pushHandler(new Whoops\Handler\PrettyPageHandler);
-            $whoops->register();
+            if (DEVELOP_ENV) {
+                $whoops = new Whoops\Run;
+                $whoops->pushHandler(new Whoops\Handler\PrettyPageHandler);
+                $whoops->register();
+            }
         }
 
         $class = ltrim($class, '\\');

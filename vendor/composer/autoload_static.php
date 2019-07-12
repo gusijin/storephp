@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit84c817e3c07bfc9bd2ad69ec988e7860
+class ComposerStaticInitd2222f8da2c07833343d679205569390
 {
     public static $prefixLengthsPsr4 = array (
         'W' => 
@@ -28,22 +28,11 @@ class ComposerStaticInit84c817e3c07bfc9bd2ad69ec988e7860
         ),
     );
 
-    public static $prefixesPsr0 = array (
-        'M' => 
-        array (
-            'Monolog' => 
-            array (
-                0 => __DIR__ . '/..' . '/monolog/monolog/src',
-            ),
-        ),
-    );
-
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit84c817e3c07bfc9bd2ad69ec988e7860::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit84c817e3c07bfc9bd2ad69ec988e7860::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit84c817e3c07bfc9bd2ad69ec988e7860::$prefixesPsr0;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitd2222f8da2c07833343d679205569390::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitd2222f8da2c07833343d679205569390::$prefixDirsPsr4;
 
         }, null, ClassLoader::class);
     }
