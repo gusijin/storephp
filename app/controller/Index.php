@@ -23,7 +23,7 @@ class Index extends Controller
     {
         $result = $this->indexModel->doSomething();
 
-        $this->render('index/myindex.html', ['sq' => $result]);
+        $this->render('index/index.html', ['sq' => $result]);
     }
 
     public function test()

@@ -16,7 +16,7 @@ class Router
 
         self::$uri = $_SERVER['REQUEST_URI'];
         if (isset($_GET['r'])) {
-            self::parseCommon();
+            self::parseByCommonRouter();
         } else {
             self::parseRewrite();
         }
@@ -27,7 +27,7 @@ class Router
     /**
      * 普通路由解析
      */
-    public static function parseCommon()
+    public static function parseByCommonRouter()
     {
         $router = isset($_GET['r']) ? explode(DIRECTORY_SEPARATOR, $_GET['r']) : [DEFAULT_CONTROLLER, DEFAULT_ACTION];
 

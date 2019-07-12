@@ -10,7 +10,7 @@ class IndexModel extends Model
 
     public function doSomething()
     {
-        $sq = "welcome to storephp!";
+        $sq = "Welcome to StorePHP!";
         return $sq;
     }
 
