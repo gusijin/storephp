@@ -12,6 +12,7 @@ class Loader
         if (file_exists($vendorAutoloadFile)) {
             include $vendorAutoloadFile;
 
+            //bug调试
             if (DEVELOP_ENV) {
                 $whoops = new Whoops\Run;
                 $whoops->pushHandler(new Whoops\Handler\PrettyPageHandler);

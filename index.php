@@ -25,7 +25,7 @@ define("SYSTEM_PATH", BASE_PATH . 'system' . DIRECTORY_SEPARATOR);
 //定义应用路径
 define("APP_PATH", BASE_PATH . 'app' . DIRECTORY_SEPARATOR);
 //定义系统配置文件路径
-define("CONF_PATH", SYSTEM_PATH . 'config' . DIRECTORY_SEPARATOR);
+define("CONF_PATH", BASE_PATH . 'config' . DIRECTORY_SEPARATOR);
 //定义基础类文件路径
 define("CORE_PATH", SYSTEM_PATH . 'core' . DIRECTORY_SEPARATOR);
 
