@@ -8,4 +8,9 @@ abstract class Controller
     {
         View::display($viewFile, $data);
     }
+
+    public function assign($tplVar, $value = '')
+    {
+        View::assign($tplVar, $value);
+    }
 }
