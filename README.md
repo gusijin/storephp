@@ -135,11 +135,9 @@ $this->render('index/index.html', $data);
 <head>
     <meta charset="UTF-8">
     <title>{$sq}</title>
-    
 </head>
 <body>
 <div id="myborder">
-=
     <div id="myContent">
         {$sq}
         <div>
