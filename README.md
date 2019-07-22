@@ -130,26 +130,12 @@ $this->render('index/index.html', $data);
 
 模板显示数据
 ```html
-<!DOCTYPE HTML>
-<html lang="zh-cn">
-<head>
-    <meta charset="UTF-8">
-    <title>{$sq}</title>
-</head>
-<body>
-<div id="myborder">
-    <div id="myContent">
-        {$sq}
-        <div>
-            {if $users}
-                {foreach from=$users key=users_key item=users_item}
-                    {$users_key} => {$users_item.name}
-                {/foreach}
-            {/if}
-        </div>
-    </div>
-</div>
-</body>
-</html>
-
+<!--显示变量-->
+{$sq}
+<!--foreach-->
+{if $users}
+    {foreach from=$users key=users_key item=users_item}
+        {$users_key} => {$users_item.name}
+    {/foreach}
+{/if}
 ```
