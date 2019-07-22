@@ -50,6 +50,7 @@ return [
 ];
 
 ```
+可直接访问 http://url/shop.html
 
 
 ### 数据库操作
