@@ -10,6 +10,14 @@ class View
     public static $_temp_key = array(); // 临时存放 foreach 里 key 的数组
     public static $_temp_val = array(); // 临时存放 foreach 里 item 的数组
     public static $_patchstack = '';
+    public static $_nowtime = null;
+
+    function __construct()
+    {
+        self::$_nowtime = time();
+        header('Content-type: text/html; charset=utf-8');
+    }
+
 
     /**
      * 展示页面
@@ -61,7 +69,6 @@ class View
     private static function _eval($content)
     {
         ob_start();
-        //echo "<pre>";print_r($content);die();
         eval('?' . '>' . trim($content));
         $content = ob_get_contents();
         ob_end_clean();
@@ -206,7 +213,7 @@ class View
                 case 'insert' :
                     $t = self::getPara(substr($tag, 7), false);
                     $out = "<?php \n" . '$k = ' . preg_replace("/(\'\\$[^,]+)/e", "stripslashes(trim('\\1','\''));", var_export($t, true)) . ";\n";
-                    $out .= 'echo $this->_hash . $k[\'name\'] . \'|\' . base64_encode(serialize($k)) . $this->_hash;' . "\n?>";
+                    $out .= 'echo $k[\'name\'] . \'|\' . base64_encode(serialize($k));' . "\n?>";
 
                     return $out;
                     break;
@@ -218,31 +225,31 @@ class View
                 case 'cycle' :
                     $t = self::getPara(substr($tag, 6), 0);
 
-                    return '<?php echo $this->cycle(' . self::makeArray($t) . '); ?>';
+                    return '<?php echo self::cycle(' . self::makeArray($t) . '); ?>';
                     break;
 
                 case 'html_options':
                     $t = self::getPara(substr($tag, 13), 0);
 
-                    return '<?php echo $this->html_options(' . self::makeArray($t) . '); ?>';
+                    return '<?php echo self::html_options(' . self::makeArray($t) . '); ?>';
                     break;
 
                 case 'html_select_date':
                     $t = self::getPara(substr($tag, 17), 0);
 
-                    return '<?php echo $this->html_select_date(' . self::makeArray($t) . '); ?>';
+                    return '<?php echo self::html_select_date(' . self::makeArray($t) . '); ?>';
                     break;
 
                 case 'html_radios':
                     $t = self::getPara(substr($tag, 12), 0);
 
-                    return '<?php echo $this->html_radios(' . self::makeArray($t) . '); ?>';
+                    return '<?php echo self::html_radios(' . self::makeArray($t) . '); ?>';
                     break;
 
                 case 'html_select_time':
                     $t = self::getPara(substr($tag, 12), 0);
 
-                    return '<?php echo $this->html_select_time(' . self::makeArray($t) . '); ?>';
+                    return '<?php echo self::html_select_time(' . self::makeArray($t) . '); ?>';
                     break;
 
                 case 'function' :
@@ -631,7 +638,7 @@ class View
         } else {
             $key = null;
             $key_part = '';
-            $attrs['key']='';
+            $attrs['key'] = '';
         }
 
         if (!empty($attrs['name'])) {
@@ -678,15 +685,166 @@ class View
      * @param  mixed $val
      * @return  void
      */
-   /* private static function push_vars($key='', $val='')
+    /* private static function push_vars($key='', $val='')
+     {
+         if (!empty($key)) {
+             array_push(self::$_temp_key, "self::\$_var['$key']='" . self::$_var[$key] . "';");
+         }
+         if (!empty($val)) {
+             array_push(self::$_temp_val, "self::\$_var['$val']='" . self::$_var[$val] . "';");
+         }
+     }*/
+
+
+    private static function html_options($arr)
     {
-        if (!empty($key)) {
-            array_push(self::$_temp_key, "self::\$_var['$key']='" . self::$_var[$key] . "';");
+        $selected = $arr['selected'];
+
+        if ($arr['options']) {
+            $options = (array)$arr['options'];
+        } elseif ($arr['output']) {
+            if ($arr['values']) {
+                foreach ($arr['output'] as $key => $val) {
+                    $options["{$arr[values][$key]}"] = $val;
+                }
+            } else {
+                $options = array_values((array)$arr['output']);
+            }
         }
-        if (!empty($val)) {
-            array_push(self::$_temp_val, "self::\$_var['$val']='" . self::$_var[$val] . "';");
+        $out = '';
+        if ($options) {
+            foreach ($options as $key => $val) {
+                $out .= $key == $selected ? "<option value=\"$key\" selected>$val</option>" : "<option value=\"$key\">$val</option>";
+            }
         }
-    }*/
+
+        return $out;
+    }
+
+    private static function html_select_date($arr)
+    {
+        $pre = $arr['prefix'];
+        if (isset($arr['time'])) {
+            if (intval($arr['time']) > 10000) {
+                $arr['time'] = gmdate('Y-m-d', $arr['time'] + 8 * 3600);
+            }
+            $t = explode('-', $arr['time']);
+            $year = strval($t[0]);
+            $month = strval($t[1]);
+            $day = strval($t[2]);
+        }
+        $now = gmdate('Y', self::$_nowtime);
+        if (isset($arr['start_year'])) {
+            if (abs($arr['start_year']) == $arr['start_year']) {
+                $startyear = $arr['start_year'];
+            } else {
+                $startyear = $arr['start_year'] + $now;
+            }
+        } else {
+            $startyear = $now - 3;
+        }
+
+        if (isset($arr['end_year'])) {
+            if (strlen(abs($arr['end_year'])) == strlen($arr['end_year'])) {
+                $endyear = $arr['end_year'];
+            } else {
+                $endyear = $arr['end_year'] + $now;
+            }
+        } else {
+            $endyear = $now + 3;
+        }
+
+        $out = "<select name=\"{$pre}Year\">";
+        for ($i = $startyear; $i <= $endyear; $i++) {
+            $out .= $i == $year ? "<option value=\"$i\" selected>$i</option>" : "<option value=\"$i\">$i</option>";
+        }
+        if ($arr['display_months'] != 'false') {
+            $out .= "</select>&nbsp;<select name=\"{$pre}Month\">";
+            for ($i = 1; $i <= 12; $i++) {
+                $out .= $i == $month ? "<option value=\"$i\" selected>" . str_pad($i, 2, '0', STR_PAD_LEFT) . "</option>" : "<option value=\"$i\">" . str_pad($i, 2, '0', STR_PAD_LEFT) . "</option>";
+            }
+        }
+        if ($arr['display_days'] != 'false') {
+            $out .= "</select>&nbsp;<select name=\"{$pre}Day\">";
+            for ($i = 1; $i <= 31; $i++) {
+                $out .= $i == $day ? "<option value=\"$i\" selected>" . str_pad($i, 2, '0', STR_PAD_LEFT) . "</option>" : "<option value=\"$i\">" . str_pad($i, 2, '0', STR_PAD_LEFT) . "</option>";
+            }
+        }
+
+        return $out . '</select>';
+    }
+
+    private static function html_radios($arr)
+    {
+        $name = $arr['name'];
+        $checked = $arr['checked'];
+        $options = $arr['options'];
+
+        $out = '';
+        foreach ($options as $key => $val) {
+            $out .= $key == $checked ? "<input type=\"radio\" name=\"$name\" value=\"$key\" checked>&nbsp;{$val}&nbsp;"
+                : "<input type=\"radio\" name=\"$name\" value=\"$key\">&nbsp;{$val}&nbsp;";
+        }
+
+        return $out;
+    }
+
+    private static function html_select_time($arr)
+    {
+        $pre = $arr['prefix'];
+        if (isset($arr['time'])) {
+            $arr['time'] = gmdate('H-i-s', $arr['time'] + 8 * 3600);
+            $t = explode('-', $arr['time']);
+            $hour = strval($t[0]);
+            $minute = strval($t[1]);
+            $second = strval($t[2]);
+        }
+        $out = '';
+        if (!isset($arr['display_hours'])) {
+            $out .= "<select name=\"{$pre}Hour\">";
+            for ($i = 0; $i <= 23; $i++) {
+                $out .= $i == $hour ? "<option value=\"$i\" selected>" . str_pad($i, 2, '0', STR_PAD_LEFT) . "</option>" : "<option value=\"$i\">" . str_pad($i, 2, '0', STR_PAD_LEFT) . "</option>";
+            }
+
+            $out .= "</select>&nbsp;";
+        }
+        if (!isset($arr['display_minutes'])) {
+            $out .= "<select name=\"{$pre}Minute\">";
+            for ($i = 0; $i <= 59; $i++) {
+                $out .= $i == $minute ? "<option value=\"$i\" selected>" . str_pad($i, 2, '0', STR_PAD_LEFT) . "</option>" : "<option value=\"$i\">" . str_pad($i, 2, '0', STR_PAD_LEFT) . "</option>";
+            }
+
+            $out .= "</select>&nbsp;";
+        }
+        if (!isset($arr['display_seconds'])) {
+            $out .= "<select name=\"{$pre}Second\">";
+            for ($i = 0; $i <= 59; $i++) {
+                $out .= $i == $second ? "<option value=\"$i\" selected>" . str_pad($i, 2, '0', STR_PAD_LEFT) . "</option>" : "<option value=\"$i\">$i</option>";
+            }
+
+            $out .= "</select>&nbsp;";
+        }
+
+        return $out;
+    }
+
+    private static function cycle($arr)
+    {
+        static $k, $old;
+
+        $value = explode(',', $arr['values']);
+        if ($old != $value) {
+            $old = $value;
+            $k = 0;
+        } else {
+            $k++;
+            if (!isset($old[$k])) {
+                $k = 0;
+            }
+        }
+
+        echo $old[$k];
+    }
 
     private static function makeArray($arr)
     {
