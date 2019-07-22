@@ -22,8 +22,12 @@ class Index extends Controller
     public function index()
     {
         $result = $this->indexModel->doSomething();
-
-        $this->render('index/index.html', ['sq' => $result]);
+        $useArr = $this->indexModel->getUsersList();
+        $data=[
+            'sq' => $result,
+            'users' => $useArr,
+        ];
+        $this->render('index/index.html', $data);
     }
 
     public function test()

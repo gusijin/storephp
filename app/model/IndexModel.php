@@ -48,8 +48,8 @@ class IndexModel extends Model
         //where条件查询
         $where = [
             //'name'=>'gsj',
-            'user_id'=>array('le', 3),
-            //'user_id' => array('in', array(1, 2, 3)),
+            //'user_id'=>array('le', 3),
+            'user_id' => array('in', array(1, 2, 3)),
             //'name'=>array('like', '%gsj%'),
             //'user_id'=>array( 'between', "1,3" ),
         ];

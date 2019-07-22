@@ -334,6 +334,9 @@ class DB
             \PDO::ATTR_EMULATE_PREPARES => false,
         );
         self::$__pdo = new \PDO($dsn, self::$__username, self::$__password, $options);
+        if (empty(self::$__pdo)) {
+            $this->pdo();
+        }
         self::$__is_mysql = self::$__pdo->getAttribute(\PDO::ATTR_DRIVER_NAME) === "mysql";
         return self::$__pdo;
     }

@@ -19,6 +19,13 @@
     </div>
     <div id="myContent">
         {$sq}
+        <div>
+            {if $users}
+                {foreach from=$users key=users_key item=users_item}
+                    {$users_key} => {$users_item.name}
+                {/foreach}
+            {/if}
+        </div>
     </div>
     <div id="myFoot">
         精彩从现在开始

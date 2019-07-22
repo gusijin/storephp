@@ -7,6 +7,8 @@ class View
     public static $_var = array();
     public static $_foreachmark = '';
     public static $_foreach = array();
+    public static $_temp_key = array(); // 临时存放 foreach 里 key 的数组
+    public static $_temp_val = array(); // 临时存放 foreach 里 item 的数组
     public static $_patchstack = '';
 
     /**
@@ -20,7 +22,7 @@ class View
         if (is_array($data)) {
             foreach ($data as $datakey => $dataValue) {
                 if ($dataValue != '') {
-                    self::$_var[$datakey] = $dataValue;
+                    self::assign($datakey, $dataValue);
                 }
             }
         }
@@ -59,6 +61,7 @@ class View
     private static function _eval($content)
     {
         ob_start();
+        //echo "<pre>";print_r($content);die();
         eval('?' . '>' . trim($content));
         $content = ob_get_contents();
         ob_end_clean();
@@ -112,7 +115,7 @@ class View
                         array_pop(self::$_patchstack);
                         $output = '<?php endforeach; endif; unset($_from); ?>';
                     }
-                    $output .= "<?php \self::pop_vars();; ?>";
+                    $output .= "<?php self::pop_vars(); ?>";
 
                     return $output;
                     break;
@@ -628,6 +631,7 @@ class View
         } else {
             $key = null;
             $key_part = '';
+            $attrs['key']='';
         }
 
         if (!empty($attrs['name'])) {
@@ -637,7 +641,8 @@ class View
         }
 
         $output = '<?php ';
-        $output .= "\$_from = $from; if (!is_array(\$_from) && !is_object(\$_from)) { settype(\$_from, 'array'); }; \$this->push_vars('$attrs[key]', '$attrs[item]');";
+        $output .= "\$_from = $from; if (!is_array(\$_from) && !is_object(\$_from)) { settype(\$_from, 'array'); }; ";
+        //$output .= "self::push_vars('".($attrs['key']?:'')."', '{$attrs['item']}');";
 
         if (!empty($name)) {
             $foreach_props = "self::\$_foreach['$name']";
@@ -666,6 +671,22 @@ class View
             eval($key);
         }
     }
+
+    /**
+     * 将 foreach 的 key, item 放入临时数组
+     * @param  mixed $key
+     * @param  mixed $val
+     * @return  void
+     */
+   /* private static function push_vars($key='', $val='')
+    {
+        if (!empty($key)) {
+            array_push(self::$_temp_key, "self::\$_var['$key']='" . self::$_var[$key] . "';");
+        }
+        if (!empty($val)) {
+            array_push(self::$_temp_val, "self::\$_var['$val']='" . self::$_var[$val] . "';");
+        }
+    }*/
 
     private static function makeArray($arr)
     {
