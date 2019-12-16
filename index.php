@@ -14,7 +14,6 @@
 if (version_compare(PHP_VERSION, '5.4.0', '<')) {
     die('storephp框架需要使用PHP5.4以上版本哦');
 };
-echo "111";die();
 
 //框架环境默认为开发环境，上线请关闭
 define("DEVELOP_ENV", true);
