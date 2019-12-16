@@ -39,8 +39,10 @@ class DB
     private $_exp = array('eq' => '=', 'ne' => '<>', 'gt' => '>', 'ge' => '>=', 'lt' => '<', 'le' => '<=',
         'not like' => 'NOT LIKE', 'like' => 'LIKE', 'in' => 'IN', 'not in' => 'NOT IN', 'between' => 'BETWEEN',
         'not between' => 'NOT BETWEEN',);
+    private $_incDbLinkNums = 0;
     public $_sql = "";            // sql
     public $_params = array();        // params
+
 
     public static function getInstance()
     {
@@ -334,7 +336,8 @@ class DB
             \PDO::ATTR_EMULATE_PREPARES => false,
         );
         self::$__pdo = new \PDO($dsn, self::$__username, self::$__password, $options);
-        if (empty(self::$__pdo)) {
+        if (empty(self::$__pdo) && $this->_incDbLinkNums <= 2) {
+            $this->_incDbLinkNums++;
             $this->pdo();
         }
         self::$__is_mysql = self::$__pdo->getAttribute(\PDO::ATTR_DRIVER_NAME) === "mysql";
