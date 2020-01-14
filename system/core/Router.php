@@ -69,7 +69,10 @@ class Router
     public static function boot()
     {
 
-        self::defineConst();
+        define('CONTROLLER', self::$contrallerName);
+        define('ACTION', self::$contrallerName);
+        define('LOCAL_URL', createUrl(self::$contrallerName . DIRECTORY_SEPARATOR . self::$actionName));
+
         $controllerName = 'controller\\' . self::$contrallerName;
         if (!class_exists($controllerName)) {
             echo self::$contrallerName . " does not defined";
@@ -86,15 +89,6 @@ class Router
         ]);
     }
 
-    /**
-     * 定义常用的全局常量
-     */
-    public static function defineConst()
-    {
-        define('CONTROLLER', self::$contrallerName);
-        define('ACTION', self::$contrallerName);
-        define('LOCAL_URL', createUrl(self::$contrallerName . DIRECTORY_SEPARATOR . self::$actionName));
-    }
 
     private static function setDebug()
     {

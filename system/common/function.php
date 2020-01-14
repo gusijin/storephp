@@ -1,22 +1,5 @@
 <?php
 
-if (!function_exists('compileConf')) {
-    /**
-     * 解析一个数组变量,将其各键值定义为常量
-     * @param $conf
-     */
-    function compileConf($conf)
-    {
-        foreach ($conf as $key => $val) {
-            if (is_array($val)) {
-                compileConf($val);
-            } else {
-                define($key, $val);
-            }
-        }
-    }
-}
-
 if (!function_exists('createUrl')) {
     /**
      * 获取url

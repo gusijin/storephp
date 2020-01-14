@@ -8,7 +8,6 @@ require_once SYSTEM_PATH . 'common' . DIRECTORY_SEPARATOR . 'function.php';
 require_once CORE_PATH . 'Loader.php';
 
 //公共函数解析配置
-//compileConf(require_once CONF_PATH . 'config.php');
 spl_autoload_register('core\\Loader::autoLoad');
 
 Router::bootstrap();
