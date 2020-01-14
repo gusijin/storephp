@@ -1046,7 +1046,7 @@ class View
      */
     public static function checkTemplate($viewFile)
     {
-        $viewFolder = APP_PATH . 'view' . DIRECTORY_SEPARATOR;
+        $viewFolder = PUBLIC_PATH . 'themes' . DIRECTORY_SEPARATOR . 'default' . DIRECTORY_SEPARATOR;
         if (empty($viewFile)) {
             self::$templateFile = $viewFolder . CONTROLLER . DIRECTORY_SEPARATOR . ACTION . VIEW_EXT;
         } else {
