@@ -15,9 +15,6 @@ if (version_compare(PHP_VERSION, '5.4.0', '<')) {
     die('require PHP > 5.4.0');
 };
 
-//框架环境默认为开发环境，上线请关闭
-define("DEVELOP_ENV", true);
-
 define('PUBLIC_PATH', str_replace('\\', DIRECTORY_SEPARATOR, __DIR__) . DIRECTORY_SEPARATOR);
 define("BASE_PATH", PUBLIC_PATH . '..' . DIRECTORY_SEPARATOR);
 define("SYSTEM_PATH", BASE_PATH . 'system' . DIRECTORY_SEPARATOR);

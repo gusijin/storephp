@@ -2,6 +2,8 @@
 
 namespace database;
 
+use core\Env;
+
 class DB
 {
     public static $__pdo = null;        // 默认PDO对象
@@ -68,11 +70,11 @@ class DB
 
     public function __construct()
     {
-        self::$__host = DB_HOST ? DB_HOST : '127.0.0.1';
-        self::$__username = DB_USER ? DB_USER : 'root';
-        self::$__password = DB_PWD ? DB_PWD : 'root';
-        self::$__dbname = DB_NAME ? DB_NAME : 'test';
-        self::$__charset = DB_CHATSET ? DB_CHATSET : 'utf8';
+        self::$__host = Env::get('DB_HOST') ? Env::get('DB_HOST') : '127.0.0.1';
+        self::$__username = Env::get('DB_USER') ? Env::get('DB_USER') : 'root';
+        self::$__password = Env::get('DB_PWD') ? Env::get('DB_PWD') : 'root';
+        self::$__dbname = Env::get('DB_NAME') ? Env::get('DB_NAME') : 'test';
+        self::$__charset = Env::get('DB_CHATSET') ? Env::get('DB_CHATSET') : 'utf8';
     }
 
     // 设置表前缀

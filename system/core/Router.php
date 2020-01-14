@@ -29,10 +29,10 @@ class Router
      */
     public static function parseByCommonRouter()
     {
-        $router = isset($_GET['r']) ? explode(DIRECTORY_SEPARATOR, $_GET['r']) : [DEFAULT_CONTROLLER, DEFAULT_ACTION];
+        $router = isset($_GET['r']) ? explode(DIRECTORY_SEPARATOR, $_GET['r']) : [Env::get('DEFAULT_CONTROLLER'), Env::get('DEFAULT_ACTION')];
 
         self::$contrallerName = ucfirst(strtolower($router[0]));
-        self::$actionName = isset($router[1]) ? strtolower($router[1]) : DEFAULT_ACTION;
+        self::$actionName = isset($router[1]) ? strtolower($router[1]) : Env::get('DEFAULT_ACTION');
     }
 
     /**
@@ -48,7 +48,7 @@ class Router
             $router = self::$uri;
         }
         if ($router == DIRECTORY_SEPARATOR) {
-            $router = [DEFAULT_CONTROLLER, DEFAULT_ACTION];
+            $router = [Env::get('DEFAULT_CONTROLLER'), Env::get('DEFAULT_ACTION')];
         }
         is_string($router) && $routerUri = trim($router, DIRECTORY_SEPARATOR);
 
@@ -60,7 +60,7 @@ class Router
         !is_array($router) && $router = explode(DIRECTORY_SEPARATOR, $routerUri);
 
         self::$contrallerName = ucfirst(strtolower($router[0]));
-        self::$actionName = isset($router[1]) ? strtolower($router[1]) : DEFAULT_ACTION;
+        self::$actionName = isset($router[1]) ? strtolower($router[1]) : Env::get('DEFAULT_ACTION');
     }
 
     /**
@@ -98,7 +98,7 @@ class Router
 
     private static function setDebug()
     {
-        if (DEVELOP_ENV) {
+        if (Env::get('DEVELOP_ENV')) {
             ini_set('display_errors', 1);
             error_reporting(-1);
         } else {

@@ -1048,7 +1048,7 @@ class View
     {
         $viewFolder = PUBLIC_PATH . 'themes' . DIRECTORY_SEPARATOR . 'default' . DIRECTORY_SEPARATOR;
         if (empty($viewFile)) {
-            self::$templateFile = $viewFolder . CONTROLLER . DIRECTORY_SEPARATOR . ACTION . VIEW_EXT;
+            self::$templateFile = $viewFolder . CONTROLLER . DIRECTORY_SEPARATOR . ACTION . '.html';
         } else {
             $viewFileArr = explode(DIRECTORY_SEPARATOR, $viewFile);
             self::$templateFile = $viewFolder . $viewFileArr[0] . DIRECTORY_SEPARATOR . $viewFileArr[1];
