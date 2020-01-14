@@ -52,6 +52,22 @@ return [
 ```
 可直接访问 http://url/shop.html
 
+### 数据库配置
+env文件
+
+```
+DEVELOP_ENV = true
+DEFAULT_CONTROLLER = index
+DEFAULT_ACTION = index
+
+DB_HOST = 0.0.0.0
+DB_PORT = 3306
+DB_USER = root
+DB_PWD = 123456
+DB_NAME = test
+DB_CHATSET = utf8
+```
+
 
 ### 数据库操作
 
