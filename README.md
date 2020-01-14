@@ -14,15 +14,22 @@ StorePHP是学习框架原理最佳选择，代码容易理解、复用性强
 
 ### Nginx 配置
 nginx.conf文件
+配置要目录到public
 
 ```
 location / {
-	root   /www/storephp;
+	root   /www/storephp/public;
 	index  index.php index.html index.htm;
 	if (!-e $request_filename) {
 		rewrite  ^(.*)$  /index.php?s=/$1  last;
 		break;
 	}
+}
+location ~ \.php(.*)$ {
+    fastcgi_pass   127.0.0.1:9000;
+    fastcgi_index  index.php;
+    fastcgi_param  SCRIPT_FILENAME  /www/storephp/public$fastcgi_script_name;
+    include        fastcgi_params;
 }
 
 ```
