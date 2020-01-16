@@ -23,7 +23,7 @@ class Index extends Controller
     {
         $result = $this->indexModel->doSomething();
         $useArr = $this->indexModel->getUsersList();
-        $data=[
+        $data = [
             'sq' => $result,
             'users' => $useArr,
         ];

@@ -19,7 +19,7 @@ class Loader
             include SYSTEM_PATH . $class_path;
 
             //bug调试
-            if (Env::get('DEVELOP_ENV')) {
+            if (Env::get('DEBUG')) {
                 $whoops = new Whoops\Run;
                 $whoops->pushHandler(new Whoops\Handler\PrettyPageHandler);
                 $whoops->register();

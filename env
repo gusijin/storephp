@@ -1,4 +1,4 @@
-DEVELOP_ENV = true
+DEBUG = true
 DEFAULT_CONTROLLER = index
 DEFAULT_ACTION = index
 

@@ -53,7 +53,7 @@ class Router
         is_string($router) && $routerUri = trim($router, DIRECTORY_SEPARATOR);
 
         //自定义路径
-        $routersArr = require CONF_PATH . 'routers.php';
+        $routersArr = require CONF_PATH . 'routes.php';
         if (!empty($routerUri) && !empty($routersArr['ROUTES'][$routerUri])) {
             $routerUri = $routersArr['ROUTES'][$routerUri]['action'];
         }
@@ -92,7 +92,7 @@ class Router
 
     private static function setDebug()
     {
-        if (Env::get('DEVELOP_ENV')) {
+        if (Env::get('DEBUG')) {
             ini_set('display_errors', 1);
             error_reporting(-1);
         } else {
