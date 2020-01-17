@@ -1,15 +1,13 @@
 <?php
 
-namespace database;
-
-use core\Env;
 
 class DB
 {
     public static $__pdo = null;        // 默认PDO对象
     public static $__is_mysql = null;        // 默认是否mysql数据库
-    public static $__dsn = "mysql:host=%s;dbname=%s;charset=%s;"; // DSN
+    public static $__dsn = "mysql:host=%s;port=%s;dbname=%s;charset=%s;"; // DSN
     public static $__host = "";    // 默认主机
+    public static $__port = "";    // 端口
     public static $__username = "";        // 默认账户
     public static $__password = "";    // 默认密码
     public static $__dbname = "";        // 默认数据库名称
@@ -71,6 +69,7 @@ class DB
     public function __construct()
     {
         self::$__host = Env::get('DB_HOST') ? Env::get('DB_HOST') : '127.0.0.1';
+        self::$__port = Env::get('DB_PORT') ? Env::get('DB_PORT') : '3306';
         self::$__username = Env::get('DB_USER') ? Env::get('DB_USER') : 'root';
         self::$__password = Env::get('DB_PWD') ? Env::get('DB_PWD') : 'root';
         self::$__dbname = Env::get('DB_NAME') ? Env::get('DB_NAME') : 'test';
@@ -329,7 +328,7 @@ class DB
         if (isset(self::$__pdo)) {
             return self::$__pdo;
         }
-        $dsn = sprintf(self::$__dsn, self::$__host, self::$__dbname, self::$__charset);
+        $dsn = sprintf(self::$__dsn, self::$__host, self::$__port, self::$__dbname, self::$__charset);
         $options = array(
             \PDO::ATTR_PERSISTENT => true,
             \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
